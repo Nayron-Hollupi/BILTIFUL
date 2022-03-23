@@ -166,39 +166,8 @@ namespace BILTIFUL.Core.Controles
                     sr.Close();
                 }
 
-                //PRODUCAO
-                if (File.Exists("Arquivos\\Producao.dat"))
-                {
-                    sr = new StreamReader("Arquivos\\Producao.dat");
-                    line = sr.ReadLine();
-                    while (line != null)
-                    {
-                        string cod = line.Substring(0, 5);
-                        DateTime dproducao = DateTime.Parse(line.Substring(5, 10));
-                        string produto = line.Substring(15, 12);
-                        string quantidade = line.Substring(27, 5);
-                        producao.Add(new Producao(cod, dproducao, produto, quantidade));
-                        line = sr.ReadLine();
-                    }
-                    sr.Close();
-                }
-
-                //ITENS PRODUCAO
-                if (File.Exists("Arquivos\\ItemProducao.dat"))
-                {
-                    sr = new StreamReader("Arquivos\\ItemProducao.dat");
-                    line = sr.ReadLine();
-                    while (line != null)
-                    {
-                        string cod = line.Substring(0, 5);
-                        DateTime dproducao = DateTime.Parse(line.Substring(5, 10));
-                        string mprima = line.Substring(15, 6);
-                        string quantidadeMateriaPrima = line.Substring(21, 5);
-                        itensproducao.Add(new ItemProducao(cod, dproducao, mprima, quantidadeMateriaPrima));
-                        line = sr.ReadLine();
-                    }
-                    sr.Close();
-                }
+           
+               
 
                 //VENDAS
                 if (File.Exists("Arquivos\\Venda.dat"))
@@ -310,40 +279,8 @@ namespace BILTIFUL.Core.Controles
                 }
             }
         }
-        public Controle(Producao producao)
-        {
-            if (producao != null)
-            {
-                try//envia cliente para arquivo como novo cliente]try
-                {
-                    StreamWriter sw = new StreamWriter("Arquivos\\Producao.dat", append: true);
-                    sw.WriteLine(producao.ConverterParaEDI());
-                    sw.Close();
-                    Console.WriteLine("\n\t\t\t\t\tProdução cadastrada com sucesso!");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Exception: " + e.Message);
-                }
-            }
-        }
-        public Controle(ItemProducao itemproducao)
-        {
-            if (itemproducao != null)
-            {
-                try//envia cliente para arquivo como novo cliente]try
-                {
-                    StreamWriter sw = new StreamWriter("Arquivos\\ItemProducao.dat", append: true);
-                    sw.WriteLine(itemproducao.ConverterParaEDI());
-                    sw.Close();
-                    Console.WriteLine("\n\t\t\t\t\tItem de produção cadastrado com sucesso!");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Exception: " + e.Message);
-                }
-            }
-        }
+     
+       
         public Controle(Venda venda)
         {
             if (venda != null)

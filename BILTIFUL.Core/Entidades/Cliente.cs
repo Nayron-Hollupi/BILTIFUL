@@ -52,7 +52,7 @@ namespace BILTIFUL.Core.Entidades
                 
                 connection.Open();
 
-                String sql = "SELECT CPF  FROM dbo.Cliente Where  CPF = " + cpf;
+                String sql = "SELECT CPF  FROM dbo.Cliente Where  CPF = '" + cpf +"'";
 
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -130,30 +130,31 @@ namespace BILTIFUL.Core.Entidades
         public void LocalizarCliente(string cpf)
         {
             SqlConnection connection = new SqlConnection(connString);
+           
             Console.WriteLine("\n\t\t\t\t\t         Dados do Cliente  :");
             Console.WriteLine("\t\t\t\t\t=========================================");
+           
+              
+                connection.Open();
 
+                String sql = "SELECT CPF , Nome ,Data_Nascimento , Sexo ,  Ultima_Compra , Data_Cadastro , Situacao    FROM dbo.Cliente Where  CPf = '" + cpf + "'";
 
-            connection.Open();
-
-            String sql = "SELECT CPF , Nome ,Data_Nascimento , Sexo ,  Ultima_Compra , Data_Cadastro , Situacao    FROM dbo.Cliente Where  CPf = " + cpf;
-
-            using (SqlCommand command = new SqlCommand(sql, connection))
-            {
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    while (reader.Read())
+                    using (SqlDataReader reader = command.ExecuteReader())
                     {
+                        while (reader.Read())
+                        {
 
-                        Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Nome:  {1}   \n\t\t\t\t\t|CPF: {0} " +
-                            "\n\t\t\t\t\t|Data de nascimento: {2}  \n\t\t\t\t\t|Sexo: {3} \n\t\t\t\t\t|Ultima compra: {4}   \n\t\t\t\t\t|Data de cadastro: {5} \n\t\t\t\t\t|Situação: {6} \n", reader.GetString(0), reader.GetString(1), reader.GetDateTime(2).ToString("dd/MM/yyyy")
-                             , reader.GetString(3), reader.GetDateTime(4).ToString("dd/MM/yyyy"), reader.GetDateTime(5).ToString("dd/MM/yyyy"), reader.GetString(6));
+                            Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Nome:  {1}   \n\t\t\t\t\t|CPF: {0} " +
+                                "\n\t\t\t\t\t|Data de nascimento: {2}  \n\t\t\t\t\t|Sexo: {3} \n\t\t\t\t\t|Ultima compra: {4}   \n\t\t\t\t\t|Data de cadastro: {5} \n\t\t\t\t\t|Situação: {6} \n", reader.GetString(0), reader.GetString(1), reader.GetDateTime(2).ToString("dd/MM/yyyy")
+                                 , reader.GetString(3), reader.GetDateTime(4).ToString("dd/MM/yyyy"), reader.GetDateTime(5).ToString("dd/MM/yyyy"), reader.GetString(6));
+                        }
                     }
+
                 }
-
-            }
-            connection.Close();
-
+                connection.Close();
+            
         }
 
 

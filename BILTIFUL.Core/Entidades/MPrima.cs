@@ -36,7 +36,7 @@ namespace BILTIFUL.Core.Entidades
         //cria a instância de conexão com a base de dados
         SqlConnection connection = new SqlConnection(connString);
 
-     
+        bool comparador = true;
         public void Inserir_Materia_Prima(MPrima mprima)
         {
             SqlConnection connection = new SqlConnection(connString);
@@ -57,8 +57,6 @@ namespace BILTIFUL.Core.Entidades
 
         }
 
-
-
         public void MostrarMateriaPrima()
         {
             Console.WriteLine("\n\t\t\t\t\t            Materia Prima :");
@@ -69,7 +67,7 @@ namespace BILTIFUL.Core.Entidades
 
             connection.Open();
 
-            String sql = "SELECT Codigo , Nome , Ultimo_Compra , Data_Cadastro ,Situacao   FROM dbo.Materia_Prima";
+            String sql = "SELECT Codigo , Nome , Ultimo_Compra , Data_Cadastro ,Situacao   FROM dbo.Materia_Prima  "  ;
 
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -89,6 +87,134 @@ namespace BILTIFUL.Core.Entidades
 
         }
 
+        public bool VerificaMPrima()
+        {
+            bool comparador = true;
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT Nome  FROM dbo.Materia_Prima ";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                comparador = false;
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return comparador;
+        }
+
+        public bool VerificaNomeMPrima(string nome)
+        {
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT Nome  FROM dbo.Materia_Prima  Where Nome = '" + nome  +"'";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                comparador = false;
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return comparador;
+        }
+
+        public string CodigoMPrima(string nome)
+        {
+            string codigo = "0";
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT  Codigo , Nome  FROM dbo.Materia_Prima  Where Nome = '" + nome + "'";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                               codigo = reader.GetString(0);
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+               
+            }
+
+            return codigo;
+        }
+
+        public void LocalizarMateriaPrima(string nome)
+        {
+         
+
+            SqlConnection connection = new SqlConnection(connString);
+
+            if (comparador == false)
+            {
+                connection.Open();
+                
+                String sql = "SELECT Codigo , Nome , Ultimo_Compra , Data_Cadastro ,Situacao   FROM dbo.Materia_Prima   WHERE  Nome = '" + nome + "'";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Console.WriteLine("\n\t\t\t\t\t            Materia Prima :");
+                            Console.WriteLine("\t\t\t\t\t=========================================");
+                            Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Nome:  {1}   \n\t\t\t\t\t|Codigo: {0} " +
+                                "\n\t\t\t\t\t|Ultima compra: {2}  \n\t\t\t\t\t|Data Cadastro: {3} \n\t\t\t\t\tSituacao: {4}   \n", reader.GetString(0), reader.GetString(1), reader.GetDateTime(2).ToString("dd/MM/yyyy")
+                                 , reader.GetDateTime(3).ToString("dd/MM/yyyy"), reader.GetString(4));
+                        }
+                    }
+
+                }
+                connection.Close();
+            }
+        }
 
     }
 }

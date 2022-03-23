@@ -226,10 +226,10 @@ namespace BILTIFUL.Core
             {
                 Console.Clear();
                 Console.WriteLine("\t\t\t\t\t>>>>>>>>PRODUÇÕES<<<<<<<<");
-                Console.WriteLine(producao[i].DadosProducao());
+       
                 Console.WriteLine("\t\t\t\t\tItens da produção: ");
                 List<ItemProducao> itens = itensproducao.FindAll(p => p.Id == producao[i].Id);//encontra todos os itens com mesmo id da compra
-                itens.ForEach(p => Console.WriteLine(p.DadosItemProducao()));//mostra todos os itens
+                itens.ForEach(p => Console.WriteLine());//mostra todos os itens
                 if (i > 0)
                 {
                     Console.WriteLine("\t\t\t\t\t1-primeiro");
