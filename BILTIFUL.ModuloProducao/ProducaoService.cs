@@ -60,8 +60,9 @@ namespace BILTIFUL.ModuloProducao
 
                 case "3":
                     Console.Clear();
-                    if (!ProducaoVazia()) ImpressaoDoRegistro();
-                    break;
+                    dbproducao.MostrarProducao();
+        
+                        break;
                 default:
                     Console.WriteLine("\t\t\t\t\tOpção inválida! ");
                     Console.ReadKey();

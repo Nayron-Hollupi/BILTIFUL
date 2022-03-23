@@ -113,7 +113,7 @@ namespace BILTIFUL.Core.Entidades
 
             connection.Open();
 
-            String sql = "SELECT  Codigo_Barras_Produto,Data_Producao , Quantidade , FROM dbo.Producao  ";
+            String sql = "SELECT   Codigo_Barras_Produto,Data_Producao , Quantidade  FROM dbo.Producao  ";
 
             using (SqlCommand command = new SqlCommand(sql, connection))
             {
@@ -123,8 +123,8 @@ namespace BILTIFUL.Core.Entidades
                     {
 
                         Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Codigo de Barras do Produto:  {0}   \n\t\t\t\t\t|Data da Producao: {1} " +
-                            "\n\t\t\t\t\t|Quantidade: {2}  \n\t\t\t\t\t|Quantidade: {3} \n", reader.GetString(0),reader.GetDateTime(1).ToString("dd/MM/yyyy")
-                             , reader.GetDecimal(2), reader.GetDecimal(3));
+                            "\n\t\t\t\t\t|Quantidade: {2}   \n", reader.GetString(0),reader.GetDateTime(1).ToString("dd/MM/yyyy")
+                             , reader.GetDecimal(2));
                     }
                 }
 
