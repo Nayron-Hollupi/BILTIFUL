@@ -117,7 +117,7 @@ namespace BILTIFUL.ModuloVenda
                     }
                     else
                     {
-                        Console.WriteLine(aux.VendasCliente());
+                        Console.WriteLine();
                         Console.Write("\n\t\t\t\t\tConfirma dados Cliente (S/N): ");
                         if (char.TryParse(Console.ReadLine().ToUpper(), out char confirmarCliente))
                         {
@@ -140,7 +140,7 @@ namespace BILTIFUL.ModuloVenda
 
         public void ItemVenda()
         {
-            Console.Clear();
+         /*   Console.Clear();
             Console.WriteLine("\n\t\t\t\t\t------------ Cadastro de Venda ------------");
             int cont = 0;
             float quantidade = 1;
@@ -265,7 +265,7 @@ namespace BILTIFUL.ModuloVenda
                 Console.WriteLine("\n\t\t\t\t\tVenda Cancelada!!");
                 Console.ReadKey();
             }
-            controle = new Controle();
+            controle = new Controle();*/
         }
 
         public void RemoveItem(string codigo)

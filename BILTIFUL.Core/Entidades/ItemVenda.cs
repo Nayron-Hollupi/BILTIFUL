@@ -50,7 +50,7 @@ namespace BILTIFUL.Core.Entidades
             }
             else
             {
-                System.Console.WriteLine(aux.ExibirProd());
+                System.Console.WriteLine();
             }
             return aux;
         }

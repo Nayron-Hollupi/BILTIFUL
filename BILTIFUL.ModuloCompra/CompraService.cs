@@ -209,7 +209,7 @@ namespace BILTIFUL.ModuloCompra
                 }
                 else
                 {
-                    Console.WriteLine(fornecedorCompra.DadosFornecedorCompra());
+                    Console.WriteLine();
                     Console.WriteLine("\t\t\t\t\t------------------------------");
                     do
                     {
@@ -282,7 +282,7 @@ namespace BILTIFUL.ModuloCompra
                         }
                     } while (buscar != true);
 
-                    Console.WriteLine(mPrimaCompra.DadosMateriaPrima());
+                    Console.WriteLine();
                     Console.WriteLine("\t\t\t\t\t-------------------------------------------");
                     do
                     {
@@ -465,7 +465,7 @@ namespace BILTIFUL.ModuloCompra
             List<MPrima> listaMprima = mPrima.FindAll(delegate (MPrima m) { return m.Nome.ToLower() == buscarMPrima.ToLower(); });
             listaMprima.ForEach(delegate (MPrima m)
             {
-                Console.WriteLine(m.DadosMateriaPrima());
+                Console.WriteLine();
                 Console.WriteLine("\t\t\t\t\t-----------------------------------------");
                 buscar = true;
             });

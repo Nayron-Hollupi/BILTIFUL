@@ -1,5 +1,7 @@
 ﻿using BILTIFUL.Core.Entidades.Enums;
 using System;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace BILTIFUL.Core.Entidades
 {
@@ -22,36 +24,211 @@ namespace BILTIFUL.Core.Entidades
             this.RazaoSocial = rsocial;
             this.DataAbertura = dabertura;
         }
-        public Fornecedor(string cnpj, string rsocial)
+
+        public static string datasource = @"DESKTOP-4J7NJHL";//instancia do servidor
+        public static string database = "BILTIFUL"; //Base de Dados
+        public static string username = "sa"; //usuario da conexão
+        public static string password = "123456"; //senha
+
+        //sua string de conexão 
+        static string connString = @"Data Source=" + datasource + ";Initial Catalog="
+                     + database + ";Persist Security Info=True;User ID=" + username + ";Password=" + password;
+
+        //cria a instância de conexão com a base de dados
+        SqlConnection connection = new SqlConnection(connString);
+
+
+        bool comparador = true;
+        public bool VerificaCNPJ(string cnpj)
         {
-            this.CNPJ = cnpj;
-            this.RazaoSocial = rsocial;
-            
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT CNPJ  FROM dbo.Fornecedor Where  CNPJ = " + cnpj;
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                comparador = false;
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return comparador;
         }
 
-        public  string DadosFornecedorCompra()
-        {
-            return "\t\t\t\t\tFornecedor:\t" + RazaoSocial + "\n\t\t\t\t\tCnpj:\t" + CNPJ+ "\n\t\t\t\t\tData de Abertura:\t" + DataAbertura.ToString("dd/MM/yyyy");
-        }
 
-        public Fornecedor(string cnpj, string rsocial, DateTime dabertura, DateTime ucompra, DateTime dcadastro, Situacao situacao)
+        public void Inserir_Fornecedor(Fornecedor fornecedor)
         {
 
-            this.CNPJ = cnpj;
-            this.RazaoSocial = rsocial;
-            this.DataAbertura = dabertura;
-            this.UltimaCompra = ucompra;
-            this.DataCadastro = dcadastro;
-            this.Situacao = situacao;
+            SqlConnection connection = new SqlConnection(connString);
+    
+            if (comparador == true)
+            {
+
+                using (connection)
+                {
+                    connection.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("Inserir_Fornecedor", connection);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@CNPJ", SqlDbType.NVarChar).Value = fornecedor.CNPJ;
+                    sql_cmnd.Parameters.AddWithValue("@Razao_Social", SqlDbType.NVarChar).Value = fornecedor.RazaoSocial;
+                    sql_cmnd.Parameters.AddWithValue("@Data_Abertura", SqlDbType.Date).Value = fornecedor.DataAbertura;
+                    sql_cmnd.ExecuteNonQuery();
+
+                    connection.Close();
+
+
+                }
+            }
+
         }
 
-        public string ConverterParaEDI()
+        public void MostrarFornecedor()
         {
-            return $"{CNPJ}{RazaoSocial.PadRight(50).Substring(0, 50)}{DataAbertura.ToString("dd/MM/yyyy")}{UltimaCompra.ToString("dd/MM/yyyy")}{DataCadastro.ToString("dd/MM/yyyy")}{(char)Situacao}";
+            Console.WriteLine("\n\t\t\t\t\t          Dados dos Fornecedores  :");
+            Console.WriteLine("\t\t\t\t\t=========================================");
+
+
+            SqlConnection connection = new SqlConnection(connString);
+
+            connection.Open();
+
+            String sql = "SELECT   CNPJ , Razao_Social , Data_Abertura , Ultima_Compra ,Data_Cadastro , Situacao FROM dbo.Fornecedor";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Razao Social:  {1}   \n\t\t\t\t\t|CNPJ: {0} " +
+                            "\n\t\t\t\t\t|Data de abertura: {2}  \n\t\t\t\t\t|Ultima Compra: {3} \n\t\t\t\t\t|Data Cadastro : {4}   \n\t\t\t\t\t|Situacao : {5} \n", reader.GetString(0), reader.GetString(1)
+                             , reader.GetDateTime(2).ToString("dd/MM/yyyy"), reader.GetDateTime(3).ToString("dd/MM/yyyy"), reader.GetDateTime(4).ToString("dd/MM/yyyy"), reader.GetString(5));
+                    }
+                }
+
+            }
+            connection.Close();
+
         }
-        public string DadosFornecedor()
+
+        public bool VerificaBloqueado(string cnpj)
         {
-            return "-------------------------------------------\nRazão social: " + RazaoSocial + "\nCNPJ: " + CNPJ.ToString().PadLeft(14, '0') + "\nData de abertura: " + DataAbertura.ToString("dd/MM/yyyy") + "\nData de ultima compra: " + UltimaCompra.ToString("dd/MM/yyyy") + "\nData de cadastro: " + DataCadastro.ToString("dd/MM/yyyy") + "\nSituação: " + Situacao;
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT CNPJ  FROM dbo.Bloqueado Where  CNPJ = " + cnpj;
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                comparador = false;
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return comparador;
         }
+
+        public void Bloqueado(string cnpj)
+        {
+            SqlConnection connection = new SqlConnection(connString);
+            if (comparador == true)
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("Inserir_Bloqueado", connection);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@CNPJ", SqlDbType.NVarChar).Value = cnpj;
+
+                    sql_cmnd.ExecuteNonQuery();
+                    connection.Close();
+
+                }
+            }
+
+        }
+
+        public void RemoveBloqueado(string cnpj)
+        {
+            SqlConnection connection = new SqlConnection(connString);
+            if (comparador == false)
+            {
+                using (connection)
+                {
+                    connection.Open();
+                    SqlCommand sql_cmnd = new SqlCommand("Remove_Bloqueado", connection);
+                    sql_cmnd.CommandType = CommandType.StoredProcedure;
+                    sql_cmnd.Parameters.AddWithValue("@CNPJ", SqlDbType.NVarChar).Value = cnpj;
+
+                    sql_cmnd.ExecuteNonQuery();
+                    connection.Close();
+
+                }
+            }
+
+        }
+
+        public void LocalizarFornecedor(string cnpj)
+        {
+            SqlConnection connection = new SqlConnection(connString);
+            Console.WriteLine("\n\t\t\t\t\t         Dados do Fornecedor :");
+            Console.WriteLine("\t\t\t\t\t=========================================");
+
+
+            connection.Open();
+
+            String sql = "SELECT CNPJ , Razao_Social , Data_Abertura , Ultima_Compra ,Data_Cadastro , Situacao  FROM dbo.Fornecedor Where  CNPJ = " + cnpj;
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Razao Social:  {1}   \n\t\t\t\t\t|CNPJ: {0} " +
+                      "\n\t\t\t\t\t|Data de abertura: {2}  \n\t\t\t\t\t|Ultima Compra: {3} \n\t\t\t\t\t|Data Cadastro : {4}   \n\t\t\t\t\t|Situacao : {5} \n", reader.GetString(0), reader.GetString(1)
+                       , reader.GetDateTime(2).ToString("dd/MM/yyyy"), reader.GetDateTime(3).ToString("dd/MM/yyyy"), reader.GetDateTime(4).ToString("dd/MM/yyyy"), reader.GetString(5));
+                    }
+                }
+
+            }
+            connection.Close();
+
+        }
+
+
     }
 }

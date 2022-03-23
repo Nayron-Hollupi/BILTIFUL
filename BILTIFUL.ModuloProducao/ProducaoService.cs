@@ -118,7 +118,7 @@ namespace BILTIFUL.ModuloProducao
                     if (produto != null)
                     {
                         producao.Produto = produto.CodigoBarras;
-                        Console.WriteLine(produto.DadosProduto());
+                        Console.WriteLine();
                     }
                     else
                     {
@@ -227,7 +227,7 @@ namespace BILTIFUL.ModuloProducao
         {
             Console.WriteLine(producao.Dados());
             Console.Write("\n\t\t\tProduto: ");
-            Console.WriteLine((cadastroService.cadastros.produtos.Find(c => c.CodigoBarras == producao.Produto)).DadosProduto());
+            Console.WriteLine((cadastroService.cadastros.produtos.Find(c => c.CodigoBarras == producao.Produto)));
 
             List<ItemProducao> itens = cadastroService.cadastros.itensproducao.FindAll(c => c.Id == producao.Id);
 
@@ -235,7 +235,7 @@ namespace BILTIFUL.ModuloProducao
             foreach (var itemProducao in itens)
             {
                 Console.WriteLine("\n\t\t\tQuantidade Materia prima: " + itemProducao.QuantidadeMateriaPrima);
-                Console.WriteLine((cadastroService.cadastros.materiasprimas.Find(c => c.Id == itemProducao.MateriaPrima)).DadosMateriaPrima());
+                Console.WriteLine((cadastroService.cadastros.materiasprimas.Find(c => c.Id == itemProducao.MateriaPrima)));
             }
         }
 
@@ -302,7 +302,7 @@ namespace BILTIFUL.ModuloProducao
             Producao producao = produto != null ? producao = cadastroService.cadastros.producao.Find(c => c.Produto == produto.CodigoBarras) : null;
 
             if (producao != null) DadosProducao(cadastroService.cadastros.producao.Find(c => c.Produto == produto.CodigoBarras));
-            else Console.WriteLine("Nenhuma produção encontrada para esse produto\n\n" + (produto != null ? produto.DadosProduto() : string.Empty));
+            else Console.WriteLine("Nenhuma produção encontrada para esse produto\n\n");
 
             BackMenu();
         }

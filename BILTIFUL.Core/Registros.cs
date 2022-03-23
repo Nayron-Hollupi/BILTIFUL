@@ -9,7 +9,7 @@ namespace BILTIFUL.Core
 {
     public class Registros
     {
-        public Registros(List<Cliente> clientes)
+      /*  public Registros(List<Cliente> clientes)
         {
 
             int i=0;
@@ -60,59 +60,8 @@ namespace BILTIFUL.Core
                         break;
                 }
             }
-        }
-        public Registros(List<Fornecedor> fornecedor)
-        {
-
-            int i = 0;
-            string opc = "-1";
-            while (opc != "0")
-            {
-                Console.Clear();
-                Console.WriteLine("\t\t\t\t\t>>>>>>>>FORNECEDORES<<<<<<<<");
-                Console.WriteLine(fornecedor[i].DadosFornecedor());
-                if (i > 0)
-                {
-                    Console.WriteLine("\t\t\t\t\t1-primeiro");
-                    Console.WriteLine("\t\t\t\t\t2-anterior");
-                }
-                if (i < fornecedor.Count()-1)
-                {
-                    Console.WriteLine("\t\t\t\t\t3-proximo");
-                    Console.WriteLine("\t\t\t\t\t4-ultimo");
-                }
-                Console.WriteLine("\t\t\t\t\t0-Sair");
-                Console.Write("\t\t\t\t\tOpção: ");
-                opc = Console.ReadLine();
-                switch (opc)
-                {
-                    case "1":
-                        i = 0;
-                        break; ;
-                    case "2":
-                        if (i - 1 >= 0)
-                            i--;
-                        else
-                            Console.WriteLine("\t\t\t\t\tNão existe registro antes deste");
-                        Console.ReadKey();
-                        break;
-                    case "3":
-                        if (i + 1 <= fornecedor.Count() - 1)
-                            i++;
-                        else
-                            Console.WriteLine("\t\t\t\t\tNão existe registro depois deste");
-                        Console.ReadKey();
-                        break;
-                    case "4":
-                        i = fornecedor.Count()-1;
-                        break;
-                    case "0":
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
+        }*/
+      
         public Registros(List<MPrima> materiaprima)
         {
             int i = 0;
@@ -121,7 +70,7 @@ namespace BILTIFUL.Core
             {
                 Console.Clear();
                 Console.WriteLine("\t\t\t\t\t>>>>>>>>MATERIAS PRIMAS<<<<<<<<");
-                Console.WriteLine(materiaprima[i].DadosMateriaPrima());
+                Console.WriteLine();
                 if (i > 0)
                 {
                     Console.WriteLine("\t\t\t\t\t1-primeiro");
@@ -164,7 +113,7 @@ namespace BILTIFUL.Core
                 }
             }
         }
-        public Registros(List<Produto> produto)
+      /*  public Registros(List<Produto> produto)
         {
             int i = 0;
             string opc = "-1";
@@ -214,7 +163,7 @@ namespace BILTIFUL.Core
                         break;
                 }
             }
-        }
+        }*/
         public Registros(List<Compra> compras, List<ItemCompra> itenscompras)
         {
             int i = 0;
