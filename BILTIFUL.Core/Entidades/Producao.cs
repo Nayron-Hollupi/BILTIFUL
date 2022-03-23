@@ -60,8 +60,8 @@ namespace BILTIFUL.Core.Entidades
                 connection.Open();
                 SqlCommand sql_cmnd = new SqlCommand("Inserir_Producao", connection);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue(" @Codigo_Barras_Produto", SqlDbType.NVarChar).Value = producao.Produto;
-                sql_cmnd.Parameters.AddWithValue(" @Quantidade", SqlDbType.Decimal).Value = producao.Quantidade;
+                sql_cmnd.Parameters.AddWithValue("@Codigo_Barras_Produto", SqlDbType.NVarChar).Value = producao.Produto;
+                sql_cmnd.Parameters.AddWithValue("@Quantidade", SqlDbType.Decimal).Value = producao.Quantidade;
                 sql_cmnd.ExecuteNonQuery();
 
                 connection.Close();
@@ -70,5 +70,69 @@ namespace BILTIFUL.Core.Entidades
             }
 
         }
+        public bool VerificaProducao()
+        {
+            bool comparador = true;
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT Nome  FROM dbo.Producao ";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                comparador = false;
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return comparador;
+        }
+
+        public void MostrarProducao()
+        {
+            Console.WriteLine("\n\t\t\t\t\t            Producao :");
+            Console.WriteLine("\t\t\t\t\t=========================================");
+
+            SqlConnection connection = new SqlConnection(connString);
+
+
+            connection.Open();
+
+            String sql = "SELECT  Codigo_Barras_Produto,Data_Producao , Quantidade , FROM dbo.Producao  ";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+
+                        Console.WriteLine(" \t\t\t\t\t -------------------------------------------\n\t\t\t\t\t|Codigo de Barras do Produto:  {0}   \n\t\t\t\t\t|Data da Producao: {1} " +
+                            "\n\t\t\t\t\t|Quantidade: {2}  \n\t\t\t\t\t|Quantidade: {3} \n", reader.GetString(0),reader.GetDateTime(1).ToString("dd/MM/yyyy")
+                             , reader.GetDecimal(2), reader.GetDecimal(3));
+                    }
+                }
+
+            }
+            connection.Close();
+
+        }
+
+
     }
 }

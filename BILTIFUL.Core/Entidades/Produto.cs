@@ -92,6 +92,38 @@ namespace BILTIFUL.Core.Entidades
 
         }
 
+        public string CodigoProduto(string nome)
+        {
+            string codigo = "0";
+            SqlConnection connection = new SqlConnection(connString);
+            using (connection)
+            {
+
+                connection.Open();
+
+                String sql = "SELECT   Codigo_Barras , Nome  FROM dbo.Produto  Where Nome = '" + nome + "'";
+
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.GetString(0) != null)
+                            {
+                                codigo = reader.GetString(0);
+                            }
+
+                        }
+                    }
+
+                }
+                connection.Close();
+
+            }
+
+            return codigo;
+        }
         public bool VerificaProduto(string nome)
         {
 

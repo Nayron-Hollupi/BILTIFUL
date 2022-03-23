@@ -93,7 +93,7 @@ namespace BILTIFUL.ModuloProducao
 
         public void EntradaDadosProducao()
         {
-
+          
             string nomeProduto ="0";
             if (dbproduto.ProdutoCadastrado()) {
                 Console.WriteLine("\n\t\t\tNenhum produto cadastrado");
@@ -143,59 +143,61 @@ namespace BILTIFUL.ModuloProducao
 
             if (confirmar == "S" || confirmar == "s")
             {
-              
-                EntradaDadosItemProducao();
-            }
+                decimal quantidadeMprima = 0;
+                Console.WriteLine("\n\t\t\tQuais as materias primas utilizadas?");
+                dbmateriaprima.MostrarMateriaPrima();
 
-            Producao producao = new Producao(nomeProduto, quantidade);
+
+                Console.Write("\n\t\t\tDigite o nome da materia prima uqe deseja utilizar : ");
+                string nome = Console.ReadLine().Trim().Replace(".", "").Replace("-", "").Replace("/", "");
+
+
+                if (dbmateriaprima.VerificaNomeMPrima(nome) == false)
+                {
+                    Console.Write("\n\t\t\tQuantidade Materia prima: ");
+                    if (decimal.TryParse(Console.ReadLine(), out decimal quant))
+                    {
+                        quantidadeMprima = quant;
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n\t\t\tQuantidade inválida");
+                      
+                    }
+
+                }
+
+                dbproduto.CodigoProduto(nomeProduto);
+
+                string codigoProduto = dbproduto.CodigoProduto(nomeProduto);
+                Producao producao = new Producao(codigoProduto, quantidade);
+
+                dbmateriaprima.CodigoMPrima(nome);
+
+                string codigo = dbmateriaprima.CodigoMPrima(nome);
+                ItemProducao itemproducao  = new ItemProducao(codigo, quantidadeMprima);
+
+                  ;
 
             Console.Write("\n\t\t\tDeseja cadastrar a produção (S/N): ");
             string confirma = Console.ReadLine().ToUpper();
 
             if (confirma == "S")
-            {
-                dbitemproducao.Inserir_Item_Producao(EntradaDadosItemProducao());
+            {           
+                dbitemproducao.Inserir_Item_Producao(itemproducao);
          
                 dbproducao.Inserir_Producao(producao);
             }
+            
+
+            }
+
+            Console.WriteLine("\n\t\t\tProducao Adicionada com Sucesso");
             BackMenu();
 
         }
 
-        public ItemProducao EntradaDadosItemProducao()
-        {
-            decimal quantidade = 0;
-            Console.WriteLine("\n\t\t\tQuais as materias primas utilizadas?");
-            dbmateriaprima.MostrarMateriaPrima();
-
-
-            Console.Write("\n\t\t\tDigite o nome da materia prima uqe deseja utilizar");
-            string nome = Console.ReadLine().Trim().Replace(".", "").Replace("-", "").Replace("/", "");
-
-
-            if (dbmateriaprima.VerificaNomeMPrima(nome) == false)
-            {
-                Console.Write("\n\t\t\tQuantidade Materia prima: ");
-                if (decimal.TryParse(Console.ReadLine(), out decimal quant))
-                {
-                    quantidade = quant;
-                }
-                else
-                {
-                    Console.WriteLine("\n\t\t\tQuantidade inválida");
-                    EntradaDadosItemProducao();
-                }
-              
-            }
-            dbmateriaprima.CodigoMPrima(nome);
-
-            string codigo = dbmateriaprima.CodigoMPrima(nome);
-            ItemProducao  itemproducao = new ItemProducao (codigo, quantidade );
-
-            dbitemproducao.Inserir_Item_Producao(itemproducao);
-            return itemproducao;
-
-        }
+   
 
         void Cadastro(Producao producao, List<ItemProducao> itemProducaos)
         {
